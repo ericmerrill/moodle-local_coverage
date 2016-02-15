@@ -16,7 +16,7 @@ env:
 
 
 before_install:
-  - export XDEBUGSO="$(cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini | grep xdebug"
+  - export XDEBUGSO="$(cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini | grep xdebug)"
   - echo $XDEBUGSO
 #  - phpenv config-rm xdebug.ini
   - cd ../..
