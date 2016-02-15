@@ -34,7 +34,7 @@ script:
 #  - moodle-plugin-ci validate
   - mkdir -p moodle/local/coverage/build/logs
 #  - phpenv config-add xdebug.ini
-  - sed "/<\/phpunit>/  s|</phpunit>|<logging><log type=\"coverage-clover\" target=\"moodle/local/coverage/build/logs/clover.xml\"/></logging></phpunit>| " moodle/phpunit.xml > moodle/phpunit2.xml
+  - sed "/<\/phpunit>/  s|</phpunit>|<logging><log type=\"coverage-clover\" target=\"$(pwd)/moodle/local/coverage/build/logs/clover.xml\"/></logging></phpunit>| " moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
   - sed '/<testsuites>/  s|<testsuites>|<filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory></whitelist></filter><testsuites>| ' moodle/phpunit.xml > moodle/phpunit2.xml
 #  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
