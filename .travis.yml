@@ -44,6 +44,7 @@ script:
     # Re-add xdebug for phpunit coverage tracking.
   - phpenv config-add ~/xdebug.ini
   - moodle-plugin-ci phpunit
+  - ls moodle/local/coverage/build/logs
   
 after_success:
   - ls
