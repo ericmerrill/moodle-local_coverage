@@ -16,7 +16,7 @@ env:
 
 
 before_install:
-#  - ls -R ~/.phpenv/versions/$(phpenv version-name)/etc
+    # Save the xdebug config for later use.
   - cp ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ~/
   - phpenv config-rm xdebug.ini
   - cd ../..
@@ -46,5 +46,5 @@ script:
 after_success:
   - ls
   - ls build/logs
-  - php coveralls/bin/coveralls -v
+  - travis_retry php coveralls/bin/coveralls --root_dir moodle/local/coverage -v
 
