@@ -18,6 +18,7 @@ env:
 before_install:
   - export XDEBUGSO="$(cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini | grep xdebug)"
   - echo $XDEBUGSO
+  - ls -R ~/.phpenv/versions/$(phpenv version-name)/etc
 #  - phpenv config-rm xdebug.ini
   - cd ../..
   - composer selfupdate
@@ -35,7 +36,8 @@ script:
 #  - phpenv config-add xdebug.ini
   - sed "/<\/phpunit>/  s|</phpunit>|<logging><log type=\"coverage-clover\" target=\"$(pwd)/build/logs/clover.xml\"/></logging></phpunit>| " moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
-  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
+#  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
+  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><file>local/coverage/lib.php</file></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
   - cat moodle/phpunit.xml
   - moodle-plugin-ci phpunit
