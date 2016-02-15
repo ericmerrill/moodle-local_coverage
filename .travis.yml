@@ -8,7 +8,7 @@ cache:
 
 php:
  - 5.6
-# - 7.0
+ - 7.0
 
 env:
  matrix:
@@ -30,10 +30,9 @@ install:
   - moodle-plugin-ci install
 
 script:
-#  - moodle-plugin-ci codechecker
-#  - moodle-plugin-ci validate
+    # Make a dir for the logs.
   - mkdir -p moodle/local/coverage/build/logs
-#  - phpenv config-add xdebug.ini
+    # Add logging and whitelist to the phpunit file.
   - sed "/<\/phpunit>/  s|</phpunit>|<logging><log type=\"coverage-clover\" target=\"$(pwd)/moodle/local/coverage/build/logs/clover.xml\"/></logging></phpunit>| " moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
   - sed '/<testsuites>/  s|<testsuites>|<filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory><exclude><directory suffix=".php">local/coverage/lang</directory></exclude></whitelist></filter><testsuites>| ' moodle/phpunit.xml > moodle/phpunit2.xml
@@ -41,13 +40,12 @@ script:
     # Re-add xdebug for phpunit coverage tracking.
   - phpenv config-add ~/xdebug.ini
   - moodle-plugin-ci phpunit
-  - ls moodle/local/coverage/build/logs
   
 after_success:
-  - ls
-  - ls build/logs
+    # Create a coveralls file in the plugin dir, otherwise php-coveralls will get confused.
   - echo "coverage_clover: $(pwd)/build/logs/clover.xml" > moodle/local/coverage/.coveralls.yml
   - echo "json_path: $(pwd)/build/logs/coveralls-upload.json" >> moodle/local/coverage/.coveralls.yml
+    # Need to move into the plugin dir to run, because it uses the git info.
   - cd moodle/local/coverage
   - travis_retry php ../../../coveralls/bin/coveralls -v
 
