@@ -41,7 +41,7 @@ script:
 #  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><file>local/coverage/lib.php</file></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
   - cat moodle/phpunit.xml
-  - phpenv config-add ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+  - phpenv config-add /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
   - moodle-plugin-ci phpunit
   
 after_success:
