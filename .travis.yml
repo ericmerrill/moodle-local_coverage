@@ -16,7 +16,7 @@ env:
 
 
 before_install:
-  - phpenv config-rm xdebug.ini
+#  - phpenv config-rm xdebug.ini
   - cd ../..
   - composer selfupdate
   - composer create-project -n --no-dev moodlerooms/moodle-plugin-ci ci ^1
@@ -30,7 +30,7 @@ script:
 #  - moodle-plugin-ci codechecker
 #  - moodle-plugin-ci validate
   - mkdir -p build/logs
-  - phpenv config-add xdebug.ini
+#  - phpenv config-add xdebug.ini
   - sed '/<\/phpunit>/  s|</phpunit>|<filter><whitelist><directory suffix=".php">moodle/local/coverage</directory><exclude><directory suffix=".php">moodle/local/coverage/tests</directory></exclude></whitelist></filter><logging><log type="coverage-clover" target="build/logs/clover.xml"/></logging></phpunit>| ' moodle/phpunit.xml > moodle/phpunit.xml
   - cat moodle/phpunit.xml
   - moodle-plugin-ci phpunit
