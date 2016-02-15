@@ -49,5 +49,5 @@ after_success:
   - ls
   - ls build/logs
   - cd moodle/local/coverage
-  - travis_retry php coveralls/bin/coveralls --coverage_clover=$(pwd)/build/logs/clover.xml -v
+  - travis_retry php $(pwd)/coveralls/bin/coveralls --coverage_clover=$(pwd)/build/logs/clover.xml -v
 
