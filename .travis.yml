@@ -8,7 +8,7 @@ cache:
 
 php:
  - 5.6
- - 7.0
+# - 7.0
 
 env:
  matrix:
@@ -30,9 +30,13 @@ script:
 #  - moodle-plugin-ci codechecker
 #  - moodle-plugin-ci validate
   - mkdir -p build/logs
+  - phpenv config-add xdebug.ini
+  - sed '/<\/phpunit>/  s|</phpunit>|<filter><whitelist><directory suffix=".php">moodle/local/coverage</directory><exclude><directory suffix=".php">moodle/local/coverage/tests</directory></exclude></whitelist></filter><logging><log type="coverage-clover" target="build/logs/clover.xml"/></logging></phpunit>| ' moodle/phpunit.xml > moodle/phpunit.xml
+  - cat moodle/phpunit.xml
   - moodle-plugin-ci phpunit
   
 after_success:
   - ls
-  - ls coveralls/bin
-  - php coveralls/vendor/bin/coveralls -v
+  - ls build/logs
+  - php coveralls/bin/coveralls -v
+
