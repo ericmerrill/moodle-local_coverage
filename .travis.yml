@@ -36,11 +36,8 @@ script:
 #  - phpenv config-add xdebug.ini
   - sed "/<\/phpunit>/  s|</phpunit>|<logging><log type=\"coverage-clover\" target=\"$(pwd)/moodle/local/coverage/build/logs/clover.xml\"/></logging></phpunit>| " moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
-  - sed '/<testsuites>/  s|<testsuites>|<filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory></whitelist></filter><testsuites>| ' moodle/phpunit.xml > moodle/phpunit2.xml
-#  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
-#  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><file>local/coverage/lib.php</file></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
+  - sed '/<testsuites>/  s|<testsuites>|<filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory><exclude><directory suffix=".php">local/coverage/lang</directory></exclude></whitelist></filter><testsuites>| ' moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
-#  - cat moodle/phpunit.xml
     # Re-add xdebug for phpunit coverage tracking.
   - phpenv config-add ~/xdebug.ini
   - moodle-plugin-ci phpunit
@@ -52,6 +49,5 @@ after_success:
   - echo "coverage_clover: $(pwd)/build/logs/clover.xml" > moodle/local/coverage/.coveralls.yml
   - echo "json_path: $(pwd)/build/logs/coveralls-upload.json" >> moodle/local/coverage/.coveralls.yml
   - cd moodle/local/coverage
-#  - travis_retry php coveralls/bin/coveralls -v --root_dir=$(pwd)/moodle/local/coverage/ 
   - travis_retry php ../../../coveralls/bin/coveralls -v
 
