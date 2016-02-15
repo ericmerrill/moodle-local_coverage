@@ -29,9 +29,10 @@ install:
 script:
 #  - moodle-plugin-ci codechecker
 #  - moodle-plugin-ci validate
+  - mkdir -p build/logs
   - moodle-plugin-ci phpunit
+  
+after_success:
   - ls
-  - ls coveralls/
-  - ls coveralls/vendor/
-  - ls coveralls/vendor/bin/
+  - ls coveralls/bin
   - php coveralls/vendor/bin/coveralls -v
