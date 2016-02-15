@@ -49,5 +49,5 @@ after_success:
   - ls
   - ls build/logs
   - cd moodle/local/coverage
-  - travis_retry php ../../../coveralls/bin/coveralls -v
+  - travis_retry php coveralls/bin/coveralls -v --root_dir=moodle/local/coverage/
 
