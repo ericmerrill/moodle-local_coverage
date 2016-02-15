@@ -24,6 +24,7 @@ before_install:
   - composer create-project -n --no-dev moodlerooms/moodle-plugin-ci ci ^1
   - composer create-project -n satooshi/php-coveralls coveralls dev-master
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
+  - ls -R coveralls
 
 install:
   - moodle-plugin-ci install
