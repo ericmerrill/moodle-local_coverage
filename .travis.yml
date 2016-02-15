@@ -39,12 +39,13 @@ script:
 #  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><directory suffix=".php">local/coverage</directory></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
 #  - sed '/<testsuite name="local_coverage_testsuite">/  s|<testsuite name="local_coverage_testsuite">|<testsuite name="local_coverage_testsuite"><filter><whitelist processUncoveredFilesFromWhitelist="true"><file>local/coverage/lib.php</file></whitelist></filter>| ' moodle/phpunit.xml > moodle/phpunit2.xml
   - mv moodle/phpunit2.xml moodle/phpunit.xml
-  - cat moodle/phpunit.xml
+#  - cat moodle/phpunit.xml
+    # Re-add xdebug for phpunit coverage tracking.
   - phpenv config-add ~/xdebug.ini
   - moodle-plugin-ci phpunit
   
 after_success:
   - ls
   - ls build/logs
-  - travis_retry php coveralls/bin/coveralls --root_dir moodle/local/coverage -v
+  - travis_retry php coveralls/bin/coveralls --root_dir=moodle/local/coverage --coverage_clover=build/logs/clover.xml -v
 
