@@ -48,5 +48,6 @@ script:
 after_success:
   - ls
   - ls build/logs
-  - travis_retry php coveralls/bin/coveralls --root_dir=moodle/local/coverage --coverage_clover=$(pwd)/build/logs/clover.xml --json_path=$(pwd)/coveralls.json -v
+  - cd moodle/local/coverage
+  - travis_retry php coveralls/bin/coveralls --coverage_clover=$(pwd)/build/logs/clover.xml -v
 
