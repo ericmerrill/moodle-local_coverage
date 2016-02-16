@@ -23,7 +23,6 @@ before_install:
   - cd ../..
   - composer selfupdate
   - composer create-project -n --no-dev moodlerooms/moodle-plugin-ci ci ^1
-  - composer create-project -n satooshi/php-coveralls coveralls dev-master
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -42,6 +41,8 @@ script:
   - moodle-plugin-ci phpunit
   
 after_success:
+    # Only bother installing coveralls if we succeeded.
+  - composer create-project -n satooshi/php-coveralls coveralls dev-master
     # Create a coveralls file in the plugin dir, otherwise php-coveralls will get confused.
   - echo "coverage_clover: $(pwd)/build/logs/clover.xml" > moodle/local/coverage/.coveralls.yml
   - echo "json_path: $(pwd)/build/logs/coveralls-upload.json" >> moodle/local/coverage/.coveralls.yml
