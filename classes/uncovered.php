@@ -23,19 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_coverage;
 
-global $CFG;
-require_once($CFG->dirroot . '/local/coverage/lib.php');
+class uncovered extends \core_date {
+    public function uncovered() {
+        return "Uncovered";
+    }
 
-class local_coverage_base_testcase extends advanced_testcase {
-    public function test_everything() {
-        $this->assertEquals(local_coverage_tested(), 300000);
-        $this->assertEquals(local_coverage_tested(false), 30000);
-        $this->assertEquals(local_coverage_letter(), 'A');
-        $this->assertEquals(local_coverage_user(), -10);
-        $cov = new \local_coverage\covered();
-        $this->assertEquals($cov->covered(), 'Covered');
-        $this->assertEquals(\local_coverage\covered::covered_static(), 'Covered');
+    public static function uncovered_static() {
+        return "Uncovered";
     }
 }
