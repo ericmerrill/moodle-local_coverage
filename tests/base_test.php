@@ -32,5 +32,7 @@ class local_coverage_base_testcase extends advanced_testcase {
     public function test_everything() {
         $this->assertEquals(local_coverage_tested(), 300000);
         $this->assertEquals(local_coverage_tested(false), 30000);
+        $this->assertEquals(local_coverage_letter(), 'A');
+        $this->assertEquals(local_coverage_user(), -10);
     }
 }

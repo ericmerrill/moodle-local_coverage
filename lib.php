@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require_once($CFG->dirroot.'/lib/gradelib.php');
+
 function local_coverage_tested($yes = true) {
     $a = 10;
     $b = 3000;
@@ -37,7 +39,21 @@ function local_coverage_tested($yes = true) {
         echo "Never run";
     }
 
+
+
     return $c;
+}
+
+function local_coverage_letter() {
+    $letters = grade_get_letters();
+
+    return reset($letters);
+}
+
+function local_coverage_user() {
+    $nr = \core_user::NOREPLY_USER;
+
+    return $nr;
 }
 
 function local_coverage_not_tested() {
