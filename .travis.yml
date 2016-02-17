@@ -48,5 +48,5 @@ after_success:
   - echo "json_path: $(pwd)/build/logs/coveralls-upload.json" >> moodle/local/coverage/.coveralls.yml
     # Need to move into the plugin dir to run, because it uses the git info.
   - cd moodle/local/coverage
-  - travis_retry php ../../../coveralls/bin/coveralls -v
+  - travis_retry php ../../../vendor/bin/coveralls -v
 
