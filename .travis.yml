@@ -23,6 +23,7 @@ before_install:
   - cd ../..
   - composer selfupdate
   - composer create-project -n --no-dev moodlerooms/moodle-plugin-ci ci ^1
+  - composer require satooshi/php-coveralls
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -32,17 +33,16 @@ script:
     # Make a dir for the logs.
   - mkdir -p moodle/local/coverage/build/logs
     # Add logging and whitelist to the phpunit file.
-  - sed "/<\/phpunit>/  s|</phpunit>|<logging><log type=\"coverage-clover\" target=\"$(pwd)/moodle/local/coverage/build/logs/clover.xml\"/></logging></phpunit>| " moodle/phpunit.xml > moodle/phpunit2.xml
-  - mv moodle/phpunit2.xml moodle/phpunit.xml
-  - sed '/<testsuites>/  s|<testsuites>|<filter><whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false"><directory suffix=".php">local/coverage</directory><exclude><directory suffix=".php">local/coverage/lang</directory><file>local/coverage/version.php</file></exclude></whitelist></filter><testsuites>| ' moodle/phpunit.xml > moodle/phpunit2.xml
-  - mv moodle/phpunit2.xml moodle/phpunit.xml
+  - export XML="<logging><log type=\"coverage-clover\" target=\"$(pwd)/moodle/local/coverage/build/logs/clover.xml\"/></logging>"
+  - export XMLINCLUDE="<directory suffix=\".php\">local/coverage</directory>"
+  - export XMLEXCLUDE="<directory suffix=\".php\">local/coverage/lang</directory><file>local/coverage/version.php</file>"
+  - export XML="$XML<filter><whitelist addUncoveredFilesFromWhitelist=\"true\" processUncoveredFilesFromWhitelist=\"false\">$XMLINCLUDE<exclude>$XMLEXCLUDE</exclude></whitelist></filter>"
+  - sed "/<testsuites>/  s|<testsuites>|$XML<testsuites>| " moodle/phpunit.xml > moodle/phpunit2.xml
     # Re-add xdebug for phpunit coverage tracking.
   - phpenv config-add ~/xdebug.ini
   - moodle-plugin-ci phpunit
   
 after_success:
-    # Only bother installing coveralls if we succeeded.
-  - composer create-project -n satooshi/php-coveralls coveralls dev-master
     # Create a coveralls file in the plugin dir, otherwise php-coveralls will get confused.
   - echo "coverage_clover: $(pwd)/build/logs/clover.xml" > moodle/local/coverage/.coveralls.yml
   - echo "json_path: $(pwd)/build/logs/coveralls-upload.json" >> moodle/local/coverage/.coveralls.yml
