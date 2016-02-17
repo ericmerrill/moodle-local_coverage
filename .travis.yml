@@ -38,6 +38,7 @@ script:
   - export XMLEXCLUDE="<directory suffix=\".php\">local/coverage/lang</directory><file>local/coverage/version.php</file>"
   - export XML="$XML<filter><whitelist addUncoveredFilesFromWhitelist=\"true\" processUncoveredFilesFromWhitelist=\"false\">$XMLINCLUDE<exclude>$XMLEXCLUDE</exclude></whitelist></filter>"
   - sed "/<testsuites>/  s|<testsuites>|$XML<testsuites>| " moodle/phpunit.xml > moodle/phpunit2.xml
+  - mv moodle/phpunit2.xml moodle/phpunit.xml
     # Re-add xdebug for phpunit coverage tracking.
   - phpenv config-add ~/xdebug.ini
   - moodle-plugin-ci phpunit
